@@ -1,0 +1,161 @@
+#{extends 'templates/main.html'/}
+#{set title:'My Posts'/}
+
+<style type="text/css">
+#my_post_left_div {
+	border: 1px solid #A9C9E2;
+	width: 150px;
+	position: relative;
+	top: 10px;
+	float: left;
+}
+
+#my_post_middle_div {
+	border: 1px solid #A90000;
+	width: 380px;
+	position: relative;
+	top: 10px;
+	float: left;
+}
+
+#my_post_right_div {
+	border: 1px solid #F9B3D5;
+	width: 400px;
+	float: left;
+	position: relative;
+	top: 10px;
+}
+
+.postimage {
+	max-width: 100px;
+	max-height: 100px;
+	overflow: hidden;
+}
+</style>
+
+<script>
+
+$(function() {      
+   initialize();
+   setMarkers();
+});
+
+//initial a Google map
+var myPostScope = {};
+function initialize() {
+	myPostScope.mapOptions = {
+          center: new google.maps.LatLng(0, 0),
+          zoom: 1,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+	myPostScope.map = new google.maps.Map(document.getElementById("mypost-map-canvas"),
+			myPostScope.mapOptions);
+}
+
+//setMarkerPosition
+function setMarkerPosition(lat, lng){
+	var location = new google.maps.LatLng(lat, lng);
+	
+	myPostScope.map.panTo(location);
+	myPostScope.map.setZoom(16);
+   	
+   	var marker = new google.maps.Marker({
+	            map: myPostScope.map,
+	            position: location
+	        });
+}
+
+//Add all markers related to the current user to the map
+function setMarkers(){
+		  #{list items:user.posts, as:'myPost'}
+			var lati = ${myPost.mapLocation.latitude} ;
+		    var longi = ${myPost.mapLocation.longitude} ;
+
+			var location = new google.maps.LatLng(lati, longi);
+			myPostScope.map.panTo(location);
+			myPostScope.map.setZoom(1);		  
+			
+		   	var position = new google.maps.LatLng(lati, longi);
+			var marker = new google.maps.Marker({
+		      position: position,
+		      map: myPostScope.map
+		    });
+		  #{/list}
+}
+
+        
+</script>
+
+<div id="my_post_left_div">
+	<h3>${user.fullname}</h3>
+	<br> <input type="image" class="postimage"
+		src="@{RequestUtils.renderImage(user.image.id)}" alt="Edit Pic" /> <input
+		type="file" id="photo" name="photoData" style="display: none;" /> <br>
+
+
+	<h3>Followed</h3>
+	#{list items:user.followed, as:'followed'}
+	<div class="followed">
+		<h2 class="myfollowed-fullname">
+			<a href="@{ViewProfile.page(followed.id)}">${followed.fullname}</a>
+		</h2>
+		<div>
+			<img class="postimage"
+				src="@{RequestUtils.renderImage(user.image.id)}">
+		</div>
+		<a href="@{ViewProfile.page(followed.id)}">more</a>
+	</div>
+	#{/list}
+</div>
+
+
+<div id="my_post_middle_div">
+	<div class="myposts">
+	        <h3>My posts</h3>
+        	<br>
+        	
+        	#{form @NewPost.page()}
+            	<button>Add New Post </button>
+            #{/form}
+			<br>
+			    
+            #{list items:user.posts, as:'myPost'}
+                <div class="post" >                
+                    <h2 class="post-title" #{if myPost.mapLocation.latitude} onmouseover="setMarkerPosition(${myPost.mapLocation.latitude}, ${myPost.mapLocation.longitude})" #{/if}>
+                        <a href="@{ViewPost.page(myPost.id)}">${myPost.title}</a>
+                    </h2>                    
+                    <div>
+						<span class="post-date"> Posted at: ${myPost.postingDate} </span>
+					</div>
+
+					#{list items:myPost.content.pictures, as:'picutre'}
+					<div class="post-image">
+						<input type="image" class="postimage"
+							src="@{RequestUtils.renderImage(picutre.id)}" alt="Edit Pic" />
+					</div>
+					#{/list}
+
+                    
+                    <div class="post-metadata">
+                        <span class="post-desc">
+                            ${myPost.description}
+                        </span>
+                   
+                        <span class="post-date">
+
+                        </span>
+                    </div>
+                </div>
+            #{/list}
+            #{else}
+			    <div class="empty">
+			        You havn't publish any post .
+			    </div>
+			#{/else}
+        </div>
+</div>
+
+<div id="my_post_right_div">
+    <div id="mypost-map-canvas" style="height:400px;width:400px">  </div>
+</div>
+
