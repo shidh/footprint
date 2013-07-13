@@ -1,0 +1,30 @@
+#{extends 'templates/main.html' /}
+
+#{set title:'TourFootprint - I was here!'/}
+
+#{set 'moreStyles'}
+	<link rel="stylesheet/less" type="text/css" href="@{'/public/stylesheets/mainPage.less'}">
+#{/set}
+
+#{if user == nil}
+	#{set 'moreStyles'}
+		<link rel="stylesheet/less" type="text/css" href="@{'/public/stylesheets/mainPageNotAuth.less'}">
+	#{/set}
+
+	#{set 'moreScripts'}
+		#{script 'sliderman.1.3.7.js'/}
+	#{/set}
+
+	#{include 'MainPage/mainPageNotAuth.html' /}
+#{/if}
+
+#{else}
+	#{set 'moreStyles'}
+		<link rel="stylesheet/less" type="text/css" href="@{'/public/stylesheets/mainPageAuth.less'}">
+	#{/set}
+
+	#{set 'moreScripts'}
+	#{/set}
+
+	#{include 'MainPage/mainPageAuth.html' /}
+#{/else}

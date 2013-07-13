@@ -1,0 +1,95 @@
+#{if searchString}
+<div id="navigation_bar_search">
+	<input id="navigation_bar_search_text" placeholder="Type in your search terms!" type="text" name="searchString" value="${searchString?.raw()}">
+	<input id="navigation_bar_search_button" type="button" value="Search">
+</div>
+#{/if}
+
+<div id="navigation_bar_register">
+	<a href="#" class="navigation_bar_pop_up_button navigation_bar_register_button">
+		Register
+	</a>
+	<div id="navigation_bar_register_box">
+		<div class="navigation_bar_triangle">
+		</div>
+		<div class="navigation_bar_triangle2">
+		</div>
+    	<div id="navigation_bar_register_box_content">
+        	#{form @MainPage.register(), id:'navigation_bar_register_form'}
+            	<input type="text" name="email" placeholder="E-Mail" />
+            	<input type="password" name="password" placeholder="Password" />
+            	<input type="password" name="password_retyped" placeholder="Password Retyped" />
+            	<input type="submit" value="Register" />
+        	#{/form}
+    	</div>
+	</div>
+</div>
+<div id="navigation_bar_login">
+	<a href="#" class="navigation_bar_pop_up_button navigation_bar_login_button">
+		Login
+	</a>
+	<div id="navigation_bar_login_box">
+		<div class="navigation_bar_triangle">
+		</div>
+		<div class="navigation_bar_triangle2">
+		</div>
+    	<div id="navigation_bar_login_box_content">
+    		#{form @MainPage.login(), id:'navigation_bar_login_form'}
+            	<input type="text" name="email" placeholder="E-Mail" />
+            	<input type="password" name="password" placeholder="Password" />
+            	<input type="submit" value="Login" />
+        	#{/form}
+    	</div>
+    	<span id="signinButton">
+		  <span
+		    class="g-signin"
+		    data-callback="signinCallback"
+		    data-clientid="571570966889.apps.googleusercontent.com"
+		    data-cookiepolicy="single_host_origin"
+		    data-requestvisibleactions="http://schemas.google.com/AddActivity"
+		    data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email">
+		  </span>
+		</span>
+	</div>
+</div>
+
+<script>
+function signinCallback(authResult) {
+	  if (authResult['access_token']) {
+	    // Successfully authorized
+	    // Hide the sign-in button now that the user is authorized, for example:
+	    document.getElementById('signinButton').setAttribute('style', 'display: none');
+	    gapi.client.load('oauth2', 'v2', function() {
+	    	  gapi.client.oauth2.userinfo.get().execute(function(response) {
+	    	    // Shows user email
+	    	    
+	    	    gapi.client.load('plus', 'v1', function() {
+	  	    	  gapi.client.plus.people.get( {'userId' : 'me'} ).execute(function(response2) {
+	  	    	    // Shows profile information
+	    	    	//console.log(response.email);
+	  	    	    //console.log(response2.displayName);
+	  	    	    //console.log(authResult['access_token']);
+	  	    		var googleAction = #{jsRoute @MainPage.google(':email', ':fullname', ':accessToken') /};
+	  		      	$.ajax({
+	  		      		url: googleAction.url({email: response.email, fullname: response2.displayName, accessToken: authResult['access_token']}),
+	  				    success: function (data) {
+	  				    			window.location = "/myPosts";
+	  				              },
+	  		            error:	 function (xhr, ajaxOptions, thrownError) {
+	  			                	/*alert(thrownError);*/
+	  		            		  }
+	  			    });
+	  	    	  })
+	  	    	});
+	    	    
+	    	  })
+	    	});
+	  } else if (authResult['error']) {
+	    // There was an error.
+	    // Possible error codes:
+	    //   "access_denied" - User denied access to your app
+	    //   "immediate_failed" - Could not automatically log in the user
+	    // console.log('There was an error: ' + authResult['error']);
+	  }
+	}
+</script>

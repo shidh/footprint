@@ -1,0 +1,40 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                                       MainPage.index					#DONE
+
+# New Post page
+GET     /newPost                             	NewPost.page					#DONE
+# Edit Post page
+GET     /editPost                            	EditPost.page					#DONE
+# View Post page
+GET     /viewPost                            	ViewPost.page					#DONE
+
+# My Posts page
+GET     /myPosts                            	MyPosts.page					#DONE
+# Post Stream page
+GET     /postStream                            	PostStream.page					#difference to newPost?
+
+# Search Results page
+GET     /searchResults                          SearchResults.page				#DONE
+
+# My Profle page
+GET     /myProfile                            	MyProfile.page					#DONE
+# View Profle page
+GET     /viewProfile                            ViewProfile.page 				#follow button todo
+
+
+# Ignore favicon requests
+GET     /favicon.ico                            404
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/                                staticDir:public
+
+GET     /about_us                          		Company.aboutUs					#DONE
+GET     /privacy_policy                     	Company.privacyPolicy			#DONE
+GET     /tos			                     	Company.tos						#DONE
+
+# Catch all
+*       /{controller}/{action}                  {controller}.{action}

@@ -1,0 +1,62 @@
+<div id="map"></div>
+#{if ( allPostsOrderedByLikes != null && allPostsOrderedByTags != null ) }
+<div id="posts">
+	<div id="liked">
+		<div class="infoBox">
+			<p>Most liked posts</p>
+		</div>
+		#{list items:allPostsOrderedByLikes, as:'post'}
+			<div class="post">
+				<h2><a href="/viewPost?postId=${post.getId()}">${post.title.raw()}</a></h2>
+				<div class="userImage">
+					<img src="@{RequestUtils.renderUserImageByPostId(post.getId())}" alt="User Pic" />
+				</div>
+				<p>
+					${post.description.raw()}
+				</p>
+			</div>
+		#{/list}
+	</div>
+	<div id="personalized">
+		<div class="infoBox">
+			<p>Personalized posts</p>
+		</div>
+		#{list items:allPostsOrderedByTags, as:'post'}
+			<div class="post">
+				<h2><a href="/viewPost?postId=${post.getId()}">${post.title.raw()}</a></h2>
+				<div class="userImage">
+					<img src="@{RequestUtils.renderUserImageByPostId(post.getId())}" alt="User Pic" />
+				</div>
+				<p>
+					${post.description.raw()}
+				</p>
+			</div>
+		#{/list}
+	</div>
+</div>
+#{/if}
+
+<script>
+	function initialize() {
+		
+		var map = new google.maps.Map(document.getElementById('map'), {
+			zoom: 1,
+			center: new google.maps.LatLng(0,0),
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		});
+		var infoWindow = new google.maps.InfoWindow();
+		
+		#{list items:posts, as:'post'}  
+		      var marker${post.getId()} = new google.maps.Marker({
+		        position: new google.maps.LatLng(${post.mapLocation.latitude}, ${post.mapLocation.longitude}),
+		        map: map,
+		        url: '/viewPost?postId=${post.getId()}'
+		      });
+
+		      google.maps.event.addListener(marker${post.getId()}, 'click', function() {
+		    	  window.location.href = marker${post.getId()}.url;
+		      });
+		#{/list}
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+</script>

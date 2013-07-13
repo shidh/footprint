@@ -1,0 +1,166 @@
+// Import default values
+@import "template.less";
+
+.hidden_input{display: none;}
+
+#editButton {
+		background-color: #EDEDED;
+	    border: 2px solid #A8A8A8;
+	    border-radius: 10px 10px 10px 10px;
+	    color: #777777;
+	    font-weight: bold;
+	    height: 34px;
+	    vertical-align: top;
+	    width: 80px;
+}
+
+#new_post_left_div, #my_profile_middle_div {
+	float: left;
+	width: 140px;
+	
+	h3 {
+		margin-bottom: 10px !important;
+		text-decoration: underline;
+	}
+		
+	border: @default_border_width @default_border_style @default_border_color;
+	float: left;
+	margin-left: 10px;
+	width: 386px;
+	padding: 5px;
+	
+	#comment_button_input, button, #user_info_button {
+		background-color: #EDEDED;
+	    border: 2px solid #A8A8A8;
+	    border-radius: 10px 10px 10px 10px;
+	    color: #777777;
+	    font-weight: bold;
+	    height: 34px;
+	    margin: 8px 0 0 2px;
+	    vertical-align: top;
+	    width: 80px;
+	}
+	
+	#comment_button_input {
+		width: 120px;
+	}
+	
+	input, textarea {
+		border: 1px @default_border_style @default_border_color;
+		float: right;
+		width: 290px;
+	}
+	
+	.no_bottom_margin {
+		margin-bottom: 0 !important;
+	}
+	
+	p {
+		clear: both;
+		padding-bottom: 10px;
+	}
+	
+	p.edit_last {
+		padding-bottom: 0;
+	}
+	
+	#photo_data_2, #photo_data_3, #photo_data_4 {
+		margin-top: 5px;
+	}
+	
+	#photo_data_4 {
+		margin-bottom: 5px;
+	}
+	
+	#share_yes_input, #share_no_input {
+		margin-right: 285px;
+	}
+	
+	.postImage {
+		width: 60px;
+	}
+	
+	a {
+		float: right;
+		margin-left: 10px;
+	}
+	
+	iframe {
+		width: 387px;
+	}
+	
+	#description_input {
+		height: 200px !important;
+	}
+	
+	#add_tag_button, #del_tag_button {
+		float: right;
+	}
+	
+	#add_tag_button {
+		margin-left: 5px;
+	}
+	
+	#added_tags_div {
+		clear: both;
+	}
+}
+
+#new_post_right_div, #my_profile_right_div {
+	border: @default_border_width @default_border_style @default_border_color;
+	float: right;
+	height: 386px;
+	width: 386px;
+	word-wrap: break-word;
+	
+	
+	#tags_div, #myPostList {
+	    border: 2px solid #A8A8A8;
+	    margin-left: -2px;
+	    margin-top: 10px;
+	    padding: 10px 5px 10px 5px;
+	    width: 376px;
+		
+		#added_tags_div button, #add_tag_button {
+			background-color: #EDEDED;
+			border: 2px solid #A8A8A8;
+			border-radius: 10px 10px 10px 10px;
+			clear: both;
+			color: #777777;
+			font-weight: bold;
+			height: 24px;
+			margin-right: 5px;
+			padding: 0 5px;
+			vertical-align: top;
+		}
+		
+		#added_tags_div button {
+			margin-top: 5px;
+		}
+		
+		#add_tag_button {
+			float: right;
+			margin: -1px 0 0 0;
+		}
+		
+		#add_tag_input {
+			border: 1px solid #a8a8a8;
+			margin-left: 60px;
+			width: 215px;
+		}
+		
+		p {
+			margin-bottom: 10px;
+		}
+	}
+	
+	#myPostList {
+		a {
+			color: @default_font_color;
+			
+			&:hover {
+				color: @default_font_color_blue;
+			}
+		}
+	}
+}
